@@ -282,11 +282,7 @@ const GameSetup = {
         loading: { src: "/images/platformer/backgrounds/greenscreen.png" },
         complete: { src: "/images/platformer/backgrounds/OneStar.png" },
         complete2: { src: "/images/platformer/backgrounds/TwoStar.png" },
-        complete3: {src: "/images/platformer/backgrounds/ThreeStar.png" },
-        end: { src: "/images/platformer/backgrounds/Congratulations!!!.png" },
-        winter: {src: "/images/platformer/backgrounds/winter.png" },
-        snow: {src: "/images/platformer/backgrounds/snowfall.png" },
-        mini: { src: "/images/platformer/backgrounds/mini.png" },
+        end: { src: "/images/platformer/backgrounds/Congratulations!!!.png" }
       },
       players: {
         mario: {
@@ -877,9 +873,12 @@ const GameSetup = {
           { name: 'flyingUFO', id: 'flyingUFO', class: FlyingUFO, data: this.assets.enemies.flyingUFO, xPercentage:  0.1, minPosition:  0.05},
           { name: 'flyingUFO', id: 'flyingUFO', class: FlyingUFO, data: this.assets.enemies.flyingUFO, xPercentage:  0.5, minPosition:  0.05},
           { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
-          { name: 'toiletTube', id: 'toiletTube', class: Tree, data: this.assets.obstacles.toilet },
-          { name: 'complete2', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete2 },
+          { name: 'toiletTube', id: 'tree', class: Tree, data: this.assets.obstacles.toilet },
+          { name: 'complete3', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete3 },
         ];
+
+        new GameLevel( {tag: "skibidi", callback: this.playerOffScreenCallBack, objects: skibidiGameObjects} );
+
         // Game Over Level definition...
         const endGameObjects = [
         { name:'background', class: Background, id: 'background', data: this.assets.backgrounds.end}
