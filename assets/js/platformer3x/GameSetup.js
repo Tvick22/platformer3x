@@ -30,6 +30,7 @@ import GlowBlock from './GlowBlock.js';
 import skibidiTitan from './SkibidiTitan.js';
 import Laser from './Laser.js';
 import SkibidiToilet from './SkibidiToilet.js';
+import skibidiTitan from './SkibidiTitan.js';
 
 //test comment
 
@@ -378,6 +379,13 @@ const GameSetup = {
           src: "/images/platformer/sprites/alien.png",
           width: 444,
           height: 640,
+          scaleSize: 60,
+          speedRatio: 0.85,
+        },
+        skibidiToilet: {
+          src: "/images/platformer/sprites/skibidiEnemy.png",
+          width: 529,
+          height: 884,
           scaleSize: 60,
           speedRatio: 0.85,
         },
@@ -791,6 +799,7 @@ const GameSetup = {
         const skibidiGameObjects = [
           // GameObject(s), the order is important to z-index...
           { name: 'desert', id: 'background', class: Background, data: this.assets.backgrounds.desert },
+          { name: 'skibidiTitan', id: 'skibidiTitan', class: skibidiTitan, data: this.assets.enemies.skibidiTitan, xPercentage:  0.35, minPosition: 0.5 }, 
           { name: 'sand', id: 'platform', class: Platform, data: this.assets.platforms.sand },
           { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.skibidiSand, xPercentage: 0.2, yPercentage: 1 },
           { name: 'blocks', id: 'jumpPlatform', class: BlockPlatform, data: this.assets.platforms.skibidiSand, xPercentage: 0.3, yPercentage: 0.8 },
@@ -803,9 +812,9 @@ const GameSetup = {
           { name: 'coin', id: 'coin', class: Coin, data: this.assets.obstacles.vbucks, xPercentage: -0.0125, yPercentage: 0.4 },
           { name: 'coin', id: 'coin', class: Coin, data: this.assets.obstacles.vbucks, xPercentage: 0.0125, yPercentage: 0.4 },
           { name: 'coin', id: 'coin', class: Coin, data: this.assets.obstacles.vbucks, xPercentage: 0.0325, yPercentage: 0.4 },
-          { name: 'skibidiToilet', id: 'skibidiToilet', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.3, minPosition: 0.07 },
-          { name: 'skibidiToilet', id: 'skibidiToilet', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
-          { name: 'skibidiToilet', id: 'skibidiToilet', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
+          { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.3, minPosition: 0.07 },
+          { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
+          { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
           { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
           { name: 'toiletTube', id: 'tree', class: Tree, data: this.assets.obstacles.toilet },
           { name: 'complete3', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete3 },
