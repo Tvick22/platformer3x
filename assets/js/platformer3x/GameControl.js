@@ -148,12 +148,11 @@ const GameControl = {
      * @memberof GameControl
      */
     startTimer() {
-        if (GameEnv.timerActive) {
-            return;
-        }
-        
-        this.intervalId = setInterval(() => this.updateTimer(), GameEnv.timerInterval);
-        GameEnv.timerActive = true;
+        // Get the current time
+        this.startTime = Date.now();
+
+        // Start the timer interval, updating the timer every 0.01 second (10 milliseconds)
+        this.timerInterval = setInterval(() => this.updateTimer(), 10);
     },
 
     /**
@@ -174,16 +173,10 @@ const GameControl = {
     },
 
     saveTime() {
-        const date = new Date()
-        date.getDate()
-
         const data = {
             userID: GameEnv.userID,
             time: GameEnv.time - 10,
-            coinScore: GameEnv.coinScore,
-            difficulty: GameEnv.difficulty,
-            gameSpeed: GameEnv.gameSpeed,
-            date: `${date.getMonth()+1}/${date.getDate()}`
+            coinScore: GameEnv.coinScore
         }
 
         const currDataList = JSON.parse(localStorage.getItem(this.localStorageTimeKey))
