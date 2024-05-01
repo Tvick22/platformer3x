@@ -1,6 +1,10 @@
 import Multiplayer from './Multiplayer.js';
 import createSound from './Sound.js';
-
+/**
+ * Prevents players from typing no-no words in the chat.
+ * If these words are detected, a pre-written message 
+ * will be displayed instead
+ */
 class Chat {
     constructor(wordsToAdd){
         this.prohibitedWords = ['westview', 'pee', 'poo', 
@@ -9,9 +13,7 @@ class Chat {
         '911', 'die', 'luigi', 'peach', 'bowser', 'mario', 
         'mr.mortensen', 'mr. mortensen', 'mortensen', 'lopez', 
         'mr.lopez', 'mr. lopez','mister mortensen', 'mister lopez', 
-        'aws', 'amazonwebservices', 'amazon', 'amazonweb',
-        'shit', 'fuck', 'bitch', 'ass', 'asshole',
-        'piss', 'penis', 'kill yourself', 'kys'];
+        'aws', 'amazonwebservices', 'amazon', 'amazonweb'];
 
         this.prohibitedWords = this.prohibitedWords.concat(wordsToAdd);
     }
@@ -27,7 +29,7 @@ class Chat {
     parseMessage(message){
         this.prohibitedWords.forEach(word => {
             const regex = new RegExp('\\b' + word + '\\b', 'gi');
-            message = message.replace(regex, 'Erm...you can\'t say that here! This is a safe space! o_o ');
+            message = message.replace(regex, 'I Love CSSE! '.repeat(word.length));
         });
         return message;
     }
