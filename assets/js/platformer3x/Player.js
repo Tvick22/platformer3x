@@ -234,7 +234,7 @@ export class Player extends Character {
         // Tube collision check
         if (this.collisionData.touchPoints.other.id === "tube" 
             || this.collisionData.touchPoints.other.id === "tree"
-            || this.collisionData.touchPoints.other.id === "cabin") {
+            || this.collisionData.touchPoints.other.id === "cabin" || this.collisionData.touchPoints.other.id === "toiletEnd") {
 
             // Collision with the left side of the Tube
             if (this.collisionData.touchPoints.other.left) {
