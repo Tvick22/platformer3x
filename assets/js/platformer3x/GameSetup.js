@@ -13,7 +13,7 @@ import BackgroundSnow from './BackgroundSnow.js';
 import BackgroundFish from './BackgroundFish.js';
 import Platform from './Platform.js';
 import JumpPlatform from './JumpPlatform.js';
-import Player from './PlayerBase.js';
+import Player from './Player.js';
 import PlayerHills from './PlayerHills.js';
 import PlayerWinter from './PlayerWinter.js';
 import PlayerMini from './PlayerMini.js';
@@ -43,7 +43,7 @@ import Star from './Star.js';
 import Dementor from './Dementor.js';
 import Draco from './Draco.js';
 import GlowBlock from './GlowBlock.js';
-import Enemy from './Enemy.js';
+import skibidiTitan from './SkibidiTitan.js';
 
 //test comment
 
@@ -102,6 +102,11 @@ const GameSetup = {
             const waitButton = document.getElementById(id);
             // Listener function to resolve the promise when the button is clicked
             const waitButtonListener = () => {
+              GameControl.stopTimer()
+                if (!GameEnv.timerActive) {
+                  GameControl.startTimer()
+                  resolve(true)
+                }
                 resolve(true);
             };
             // Add the listener to the button's click event
@@ -225,6 +230,7 @@ const GameSetup = {
         hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
         coin: { src: "/images/platformer/obstacles/coin.png"},
+        vbucks: { src: "/images/platformer/obstacles/vbucks.png"},
         tree: { src: "/images/platformer/obstacles/tree.png",
                 hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
@@ -235,10 +241,15 @@ const GameSetup = {
         whompingwillow: { src: "/images/platformer/obstacles/whompingwillowtree.png",
                       hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
+        toilet: { src: "/images/platformer/obstacles/toilet.png",
+                hitbox: { widthPercentage: 0.1, heightPercentage: 0.1}
+              },
       },
       platforms: {
         grass: { src: "/images/platformer/platforms/grass.png" },
+        sand: {src: "/images/platformer/platforms/sand.png"},
         alien: { src: "/images/platformer/platforms/alien.png" },
+        skibidiSand: {src: "/images/platformer/platforms/skibidiBlock.png"},
         bricks: { src: "/images/platformer/platforms/brick_wall.png" },
         lava: { src: "/images/platformer/platforms/lava.jpg" },
         sandstone: { src: "/images/platformer/platforms/sandstone.png" },
@@ -265,6 +276,7 @@ const GameSetup = {
         hills: { src: "/images/platformer/backgrounds/hills.png" },
         avenida: { src: "/images/platformer/backgrounds/avenidawide3.jpg" },
         mountains: { src: "/images/platformer/backgrounds/mountains.jpg" },
+        desert: {src: "/images/platformer/backgrounds/desertbg.png"},
         clouds : { src: "/images/platformer/backgrounds/clouds.png"},
         water: { src: "/images/platformer/backgrounds/water.png" },
         fish : { src: "/images/platformer/backgrounds/school-fish.png"},
@@ -331,7 +343,7 @@ const GameSetup = {
           src: "/images/platformer/sprites/monkey.png",
           width: 40,
           height: 40,
-          scaleSize: 80,
+          scaleSize: 100,
           speedRatio: 0.7,
           wa: { row: 9, min: 8, frames: 15 },
           wd: { row: 9, min: 0, frames: 7 },
@@ -451,6 +463,20 @@ const GameSetup = {
           width: 444,
           height: 640,
           scaleSize: 60,
+          speedRatio: 0.85,
+        },
+        skibidiToilet: {
+          src: "/images/platformer/sprites/skibidiEnemy.png",
+          width: 529,
+          height: 884,
+          scaleSize: 60,
+          speedRatio: 0.85,
+        },
+        skibidiTitan: {
+          src: "/images/platformer/sprites/skibidiTItan.png",
+          width: 529,
+          height: 884,
+          scaleSize: 1500,
           speedRatio: 0.85,
         },
         flyingUFO: {
