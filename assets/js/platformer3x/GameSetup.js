@@ -9,7 +9,7 @@ import BackgroundTransitions from './BackgroundTransitions.js';
 import BackgroundClouds from './BackgroundClouds.js';
 import Platform from './Platform.js';
 import JumpPlatform from './JumpPlatform.js';
-import Player from './PlayerBase.js';
+import Player from './Player.js';
 import PlayerHills from './PlayerHills.js';
 import PlayerWinter from './PlayerWinter.js';
 import PlayerMini from './PlayerMini.js';
@@ -85,6 +85,11 @@ const GameSetup = {
             const waitButton = document.getElementById(id);
             // Listener function to resolve the promise when the button is clicked
             const waitButtonListener = () => {
+              GameControl.stopTimer()
+                if (!GameEnv.timerActive) {
+                  GameControl.startTimer()
+                  resolve(true)
+                }
                 resolve(true);
             };
             // Add the listener to the button's click event
@@ -208,10 +213,8 @@ const GameSetup = {
                 hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
         coin: { src: "/images/platformer/obstacles/coin.png"},
+        vbucks: { src: "/images/platformer/obstacles/vbucks.png"},
         tree: { src: "/images/platformer/obstacles/tree.png",
-                hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
-              },
-        toilet: { src: "/images/platformer/obstacles/toilet.png",
                 hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
       },
@@ -219,6 +222,7 @@ const GameSetup = {
         grass: { src: "/images/platformer/platforms/grass.png" },
         sand: {src: "/images/platformer/platforms/sand.png"},
         alien: { src: "/images/platformer/platforms/alien.png" },
+        skibidiSand: {src: "/images/platformer/platforms/skibidiBlock.png"},
         bricks: { src: "/images/platformer/platforms/brick_wall.png" },
         block: { src: "/images/platformer/platforms/brick_block.png" }, //MAY need 3 new variables: sizeRatio, widthRatio, and heightRatio
         itemBlock: {
@@ -236,13 +240,16 @@ const GameSetup = {
       backgrounds: {
         start: { src: "/images/platformer/backgrounds/home.png" },
         hills: { src: "/images/platformer/backgrounds/hills.png" },
+        avenida: { src: "/images/platformer/backgrounds/avenidawide3.jpg" },
         mountains: { src: "/images/platformer/backgrounds/mountains.jpg" },
+        desert: {src: "/images/platformer/backgrounds/desertbg.png"},
         clouds : { src: "/images/platformer/backgrounds/clouds.png"},
         space: { src: "/images/platformer/backgrounds/planet.jpg" },
         castles: { src: "/images/platformer/backgrounds/castles.png" },
         loading: { src: "/images/platformer/backgrounds/greenscreen.png" },
         complete: { src: "/images/platformer/backgrounds/OneStar.png" },
         complete2: { src: "/images/platformer/backgrounds/TwoStar.png" },
+        complete3: { src: "/images/platformer/backgrounds/skibidiCompletion.png" },
         end: { src: "/images/platformer/backgrounds/Congratulations!!!.png" }
       },
       players: {
@@ -300,7 +307,7 @@ const GameSetup = {
           src: "/images/platformer/sprites/monkey.png",
           width: 40,
           height: 40,
-          scaleSize: 80,
+          scaleSize: 100,
           speedRatio: 0.7,
           wa: { row: 9, min: 8, frames: 15 },
           wd: { row: 9, min: 0, frames: 7 },
@@ -412,14 +419,14 @@ const GameSetup = {
         var fun_facts = {
           //data structure
           "Fun Fact #1" : "Mario's full name is Mario Mario.", //key and value
-          "Fun Fact #2" : "Mario's least favorite food is shiitake mushrooms.", //single quotes to include the double quotes
+          "Fun Fact #2" : "Mario's least favorite food is shittake mushrooms.", //single quotes to include the double quotes
           "Fun Fact #3" : "Mario, in human years, is 24-25 years old.",
           "Fun Fact #4" : "Mario's girlfriend's name is Pauline.",
-          "Fun Fact #5" : "Call or text 929-55-MARIO (929-556-2746) to get a fun surprise!",
+          "Fun Fact #5" : "Call or text 929-55-MARIO (929-556-2746) to get a fun suprise!",
           "Fun Fact #6" : "Mario's original name was Jumpman.",
           "Fun Fact #7" : "March 10th is known as Mario Day because the abbreviation for March 10th (Mar10) looks like Mario.",
-          "Fun Fact #8" : "Mario was originally a carpenter, not a plumber.",
-          "Fun Fact #9" : "There are actually lyrics to the Mario theme song."
+          "Fun Fact #8" : " Mario was originally a carpenter, not a plumber.",
+          "Fun Fact #9" : " There are actually lyrics to the Mario theme song."
           }
         function generate(){
           var nums = Object.keys(fun_facts);
@@ -451,12 +458,12 @@ const GameSetup = {
         new GameLevel( {tag: "home",  callback: this.homeScreenCallback, objects: homeGameObjects, passive: true } );
         
       // Check local storage for the difficulty mode set
-      let difficulty = localStorage.getItem("difficulty") || "easy";
+      let difficulty = localStorage.getItem("difficulty");
 
       // If difficulty is not set (null or undefined), set it to a default value
-      // if (!difficulty) {
-      //     difficulty = "normal"; // Set default difficulty to "normal" or any other suitable value
-      // }
+      if (!difficulty) {
+          difficulty = "normal"; // Set default difficulty to "normal" or any other suitable value
+      }
       
       // Hills Game Level defintion...
       const hillsGameObjects = [];
