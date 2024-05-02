@@ -217,6 +217,9 @@ const GameSetup = {
         tree: { src: "/images/platformer/obstacles/tree.png",
                 hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
+        toilet: { src: "/images/platformer/obstacles/toilet.png",
+                hitbox: { widthPercentage: 0.1, heightPercentage: 0.1}
+              },
       },
       platforms: {
         grass: { src: "/images/platformer/platforms/grass.png" },
@@ -661,7 +664,7 @@ const GameSetup = {
           { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
           { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
           { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
-          { name: 'toiletTube', id: 'tree', class: Tree, data: this.assets.obstacles.toilet },
+          { name: 'toiletTube', id: 'toiletEnd', class: Tree, data: this.assets.obstacles.toilet },
           { name: 'complete3', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete3 },
         ];
 
