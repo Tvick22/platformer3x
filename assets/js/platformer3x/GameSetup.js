@@ -43,6 +43,7 @@ import Star from './Star.js';
 import Dementor from './Dementor.js';
 import Draco from './Draco.js';
 import skibidiTitan from './SkibidiTitan.js';
+import Laser from './Laser.js';
 
 //test comment
 
@@ -244,6 +245,9 @@ const GameSetup = {
                       hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
         toilet: { src: "/images/platformer/obstacles/toilet.png",
+                hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
+              },
+        laser: { src: "/images/platformer/obstacles/laser.png",
                 hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
       },
@@ -805,6 +809,7 @@ const GameSetup = {
           { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
           { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
           { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
+          { name: 'laser', id: 'Laser', class: Laser, data: this.assets.obstacles.laser, xPercentage:  0.75, yPercentage: 0.5 },
           { name: 'toiletTube', id: 'toiletEnd', class: Tree, data: this.assets.obstacles.toilet },
           { name: 'complete3', id: 'background', class: BackgroundTransitions,  data: this.assets.backgrounds.complete3 },
         ];
