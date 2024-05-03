@@ -13,7 +13,7 @@ import BackgroundSnow from './BackgroundSnow.js';
 import BackgroundFish from './BackgroundFish.js';
 import Platform from './Platform.js';
 import JumpPlatform from './JumpPlatform.js';
-import Player from './Player.js';
+import Player from './PlayerBase.js';
 import PlayerHills from './PlayerHills.js';
 import PlayerWinter from './PlayerWinter.js';
 import PlayerMini from './PlayerMini.js';
@@ -346,6 +346,18 @@ const GameSetup = {
               right: { row: 10, frames: 15 },
           },
           hitbox: { widthPercentage: 0.3, heightPercentage: 0.8 }
+        },
+        escaper: {
+          src: "/images/platformer/sprites/escaper.png",
+          width: 50,
+          height: 50,
+          scaleSize: 60,
+          speedRatio: 0.7,
+          wa: { row: 9, min: 8, frames: 15 },
+          wd: { row: 9, min: 0, frames: 7 },
+          a: { row: 1, frames: 15, idleFrame: { column: 7, frames: 0 } },
+          s: { row: 12, frames: 15 },
+          d: { row: 0, frames: 15, idleFrame: { column: 7, frames: 0 } }
         },
         monkey: {
           src: "/images/platformer/sprites/monkey.png",
@@ -991,9 +1003,9 @@ const GameSetup = {
           { name: 'coin', id: 'coin', class: Coin, data: this.assets.obstacles.vbucks, xPercentage: -0.0125, yPercentage: 0.4 },
           { name: 'coin', id: 'coin', class: Coin, data: this.assets.obstacles.vbucks, xPercentage: 0.0125, yPercentage: 0.4 },
           { name: 'coin', id: 'coin', class: Coin, data: this.assets.obstacles.vbucks, xPercentage: 0.0325, yPercentage: 0.4 },
-          { name: 'skibidiToilet', id: 'SkibidiToilet', class: SkibidiToilet, data: this.assets.enemies.skibidiToilet, xPercentage:  0.3, minPosition: 0.07 },
-          { name: 'skibidiToilet', id: 'SkibidiToilet', class: SkibidiToilet, data: this.assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
-          { name: 'skibidiToilet', id: 'SkibidiToilet', class: SkibidiToilet, data: this.assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
+          { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.3, minPosition: 0.07 },
+          { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
+          { name: 'skibidiToilet', id: 'Alien', class: Alien, data: this.assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 }, //this special name is used for random event 2 to make sure that only one of the Goombas ends the random event
           { name: 'monkey', id: 'player', class: Player, data: this.assets.players.monkey },
           { name: 'laser', id: 'Laser', class: Laser, data: this.assets.obstacles.laser, xPercentage:  0.75, yPercentage: 0.5 },
           { name: 'toiletTube', id: 'toiletEnd', class: Tree, data: this.assets.obstacles.toilet },
