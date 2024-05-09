@@ -169,7 +169,8 @@ const Leaderboard = {
             td5.hidden = !this.detailed
             row.append(td5);
             const td6 = document.createElement("td");
-            td6.innerText = score.date
+            const date = new Date(score.date)
+            td6.innerText = `${date.getMonth()+1}/${date.getDate()}`
             td6.hidden = !this.detailed
             row.append(td6);
             table.append(row);

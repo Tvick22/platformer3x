@@ -146,7 +146,7 @@ const GameControl = {
             coinScore: GameEnv.coinScore,
             difficulty: GameEnv.difficulty,
             gameSpeed: GameEnv.gameSpeed,
-            date: `${date.getMonth()+1}/${date.getDate()}`
+            date: date
         }
 
         const currDataList = JSON.parse(localStorage.getItem(this.localStorageTimeKey))
