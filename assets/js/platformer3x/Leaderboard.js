@@ -156,17 +156,23 @@ const Leaderboard = {
             row.append(td3);
             table.append(row);
             const td4 = document.createElement("td");
-            td4.innerText = score.difficulty;
+            if (score.difficulty) {
+                td4.innerText = score.difficulty;
+            }
             td4.hidden = !this.detailed
             row.append(td4);
             table.append(row);
             const td5 = document.createElement("td");
-            td5.innerText = score.gameSpeed;
+            if (score.gameSpeed) {
+                td5.innerText = score.gameSpeed;
+            }
             td5.hidden = !this.detailed
             row.append(td5);
             const td6 = document.createElement("td");
-            const date = new Date(score.date)
-            td6.innerText = `${date.getMonth()+1}/${date.getDate()}`
+            if (score.date) {
+                const date = new Date(score.date)
+                td6.innerText = `${date.getMonth()+1}/${date.getDate()}`
+            }
             td6.hidden = !this.detailed
             row.append(td6);
             table.append(row);
