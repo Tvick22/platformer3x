@@ -66,13 +66,9 @@ const Leaderboard = {
     },
 
     toggleDetails() {
-        const table = document.getElementsByClassName("table scores")[0]
         Leaderboard.detailed = !Leaderboard.detailed
 
-        if (table) {
-            table.remove() //remove old table if it is there
-        }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        Leaderboard.updateLeaderboardDisplay()
     },
 
     createPagingButtonsRow(table) {
@@ -182,6 +178,15 @@ const Leaderboard = {
         return table
     },
 
+    updateLeaderboardDisplay () {
+        const table = document.getElementsByClassName("table scores")[0]
+
+        if (table) {
+            table.remove() //remove old table if it is there
+        }
+        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+    },
+
     backPage () {
         const table = document.getElementsByClassName("table scores")[0]
 
@@ -192,15 +197,10 @@ const Leaderboard = {
 
         Leaderboard.currentPage -= 1
 
-        if (table) {
-            table.remove() //remove old table if it is there
-        }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        Leaderboard.updateLeaderboardDisplay()
     },
     
     frontPage () {
-        const table = document.getElementsByClassName("table scores")[0]
-
         const data = Leaderboard.getSortedLeaderboardData()
 
         console.log(data.length/Leaderboard.rowsPerPage)
@@ -211,10 +211,8 @@ const Leaderboard = {
 
         Leaderboard.currentPage += 1
 
-        if (table) {
-            table.remove() //remove old table if it is there
-        }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        Leaderboard.updateLeaderboardDisplay()
+        
     },
 
     openLeaderboardPanel () {
