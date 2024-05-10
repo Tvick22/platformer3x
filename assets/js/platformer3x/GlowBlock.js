@@ -1,7 +1,7 @@
 import GameEnv from './GameEnv.js';
 import GameObject from './GameObject.js';
 
-export class BlockPlatform extends GameObject {
+export class GlowBlock extends GameObject {
     constructor(canvas, image, data, xPercentage, yPercentage) {
         super(canvas, image, data);
         this.platformX = xPercentage * GameEnv.innerWidth;
@@ -42,8 +42,4 @@ export class BlockPlatform extends GameObject {
     }
 }
 
-export default BlockPlatform;  
-
-// comment so that i can actually push this damn thing  
-
-// alright let's push it again
+export default GlowBlock;
