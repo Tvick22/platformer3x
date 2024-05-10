@@ -9,7 +9,7 @@ const Leaderboard = {
     isOpen: false,
     detailed: false,
 
-    getSortedLeaderboardData () {
+    getTimeSortedLeaderboardData () {
         const localData = JSON.parse(localStorage.getItem(this.currentKey))
         if (!localData) {
             console.log("NO DATA")
@@ -85,7 +85,7 @@ const Leaderboard = {
     },
 
     createPagingButtonsRow() {
-        const data = Leaderboard.getSortedLeaderboardData()
+        const data = Leaderboard.getTimeSortedLeaderboardData()
 
         const pagingButtonsRow = document.createElement("div")
         pagingButtonsRow.id = "paging-buttons-row"
@@ -143,7 +143,7 @@ const Leaderboard = {
     },
     
     updateLeaderboardTable () {
-        const data = this.getSortedLeaderboardData()
+        const data = this.getTimeSortedLeaderboardData()
         const table = this.createLeaderboardDisplayTable()
         const startPage = (this.currentPage-1)*this.rowsPerPage
         const displayData = data.slice(startPage, startPage+this.rowsPerPage)
@@ -228,7 +228,7 @@ const Leaderboard = {
     },
     
     frontPage () {
-        const data = Leaderboard.getSortedLeaderboardData()
+        const data = Leaderboard.getTimeSortedLeaderboardData()
 
         console.log(data.length/Leaderboard.rowsPerPage)
 
