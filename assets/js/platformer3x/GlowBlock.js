@@ -16,8 +16,9 @@ export class BlockPlatform extends GameObject {
     // Draw position is always 0,0
     draw() {
         this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
-        // Remove glow effect
-        // this.canvas.style.boxShadow = "0 0 10px 5px rgba(0, 255, 255, 0.7)";
+
+        // add glow effect
+        this.canvas.style.boxShadow = "0 0 10px 5px rgba(0, 255, 255, 0.7)";
     }
 
     // Set platform position
@@ -41,4 +42,8 @@ export class BlockPlatform extends GameObject {
     }
 }
 
-export default BlockPlatform;
+export default BlockPlatform;  
+
+// comment so that i can actually push this damn thing  
+
+// alright let's push it again
