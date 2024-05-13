@@ -9,15 +9,54 @@ const Leaderboard = {
     isOpen: false,
     detailed: false,
 
-    getTimeSortedLeaderboardData () {
+    getTimeSortedLeaderboardData (slowestFirst) {
         const localData = JSON.parse(localStorage.getItem(this.currentKey))
         if (!localData) {
             console.log("NO DATA")
             return []
         }
         localData.sort((a, b) => a.time - b.time);
+        if (slowestFirst) {
+            return localData.reverse()
+        }
+
         return localData
     }, 
+
+    getScoreSortedLeaderboardData (highestFirst) {
+        const localData = JSON.parse(localStorage.getItem(this.currentKey))
+        if (!localData) {
+            console.log("NO DATA")
+            return []
+        }
+        localData.sort((a, b) => a.coinScore - b.coinScore);
+        if (highestFirst) {
+            return localData.reverse()
+        }
+
+        return localData
+    }, 
+
+    getDateSortedLeaderboardData (newestFirst) {
+        const localData = JSON.parse(localStorage.getItem(this.currentKey))
+        if (!localData) {
+            console.log("NO DATA")
+            return []
+        }
+
+        localData.sort((a, b) => {
+            const dateA = new Date(a.date)
+            const dateB = new Date(b.date)
+
+            return dateA - dateB
+        })
+        //defaults to oldest first
+        if (newestFirst) {
+            return localData.reverse()
+        }
+
+        return localData
+    },
 
     backgroundDim: {
         create () {
