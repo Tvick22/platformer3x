@@ -23,7 +23,7 @@ const Leaderboard = {
         return localData
     }, 
 
-    getScoreSortedLeaderboardData (highestFirst) {
+    getCoinScoreSortedLeaderboardData (highestFirst) {
         const localData = JSON.parse(localStorage.getItem(this.currentKey))
         if (!localData) {
             console.log("NO DATA")
