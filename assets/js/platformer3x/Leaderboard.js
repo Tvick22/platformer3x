@@ -67,15 +67,26 @@ const Leaderboard = {
         }
     },
 
-    createDetailToggled () {
+    createDetailToggledAndSort () {
         document.getElementById("detail-toggle-section")?.remove()
 
         const buttonSection = document.createElement("div")
         buttonSection.style.width = "100%"
         buttonSection.id = "detail-toggle-section"
+        buttonSection.style.display = "flex"
+        buttonSection.style.alignItems = "center"
+        buttonSection.style.justifyContent = "center"
+        const sortDropDown = document.createElement("label")
+        sortDropDown.htmlFor = "sorts"
+        sortDropDown.innerText = "Sort by: "
+        buttonSection.append(sortDropDown)
+        const sortOptions = document.createElement("select")
+        sortOptions.name = "sorts"
+        sortOptions.id = "sorts"
+
+        buttonSection.append(sortOptions)
         const toggleButton = document.createElement("button")
         toggleButton.style.width = "20%"
-        buttonSection.style.textAlign = "end"
         toggleButton.innerText = Leaderboard.detailed ? "[Close]":"[Expand]"
         buttonSection.append(toggleButton)
         
@@ -247,7 +258,7 @@ const Leaderboard = {
             clearButtonRow.remove()
         }
 
-        document.getElementById("leaderboardDropDown").append(Leaderboard.createDetailToggled())
+        document.getElementById("leaderboardDropDown").append(Leaderboard.createDetailToggledAndSort())
         document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
         document.getElementById("leaderboardDropDown").append(Leaderboard.createPagingButtonsRow())
         document.getElementById("leaderboardDropDown").append(Leaderboard.createClearLeaderboardButton())
