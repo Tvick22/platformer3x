@@ -296,7 +296,11 @@ export class SettingsControl extends LocalStorage{
         const lightmodekey = "islightMode"
         const div = document.createElement("div");
         div.innerHTML = "Theme Change:"; // label
-        GameEnv.isLightMode = localstorage.getItem(lightmodekey).toLowerCase() === "true"
+        const localStorageLightModeToggle = localstorage.getItem(lightmodekey)
+        
+        if (localStorageLightModeToggle) {
+            GameEnv.isLightMode = localStorageLightModeToggle.toLowerCase() === "true"
+        }
 
 
         const islightMode = document.createElement("input");  // get user defined lightmode boolean
