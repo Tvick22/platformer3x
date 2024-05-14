@@ -168,7 +168,7 @@ const GameControl = {
         GameEnv.timerActive = false
         GameEnv.time = 0;
         GameEnv.coinScore = 0;
-
+        this.updateCoinDisplay()
         clearInterval(this.intervalID)
     },
 

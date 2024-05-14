@@ -11,6 +11,7 @@ import Platform from './Platform.js';
 import JumpPlatform from './JumpPlatform.js';
 import Player from './PlayerBase.js';
 import PlayerHills from './PlayerHills.js';
+import PlayerSkibidi from './PlayerSkibidi.js';
 import PlayerWinter from './PlayerWinter.js';
 import PlayerMini from './PlayerMini.js';
 import PlayerQuidditch from './PlayerQuidditch.js';
@@ -219,11 +220,12 @@ const GameSetup = {
         tree: { src: "/images/platformer/obstacles/tree.png",
                 hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
-        toilet: { src: "/images/platformer/obstacles/toilet.png",
-                hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
-              },
-        laser: { src: "/images/platformer/obstacles/laser.png",
-                hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
+        flag: { src: "/images/platformer/obstacles/flag.png",
+              hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
+            },
+        snitch: { src: "/images/platformer/obstacles/snitch.png"},
+        whompingwillow: { src: "/images/platformer/obstacles/whompingwillowtree.png",
+                      hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
               },
       },
       platforms: {

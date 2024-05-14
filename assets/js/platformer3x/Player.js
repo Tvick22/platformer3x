@@ -233,8 +233,8 @@ export class Player extends Character {
     collisionAction() {
         // Tube collision check
         if (this.collisionData.touchPoints.other.id === "tube" 
-            || this.collisionData.touchPoints.other.id === "tree"
-            || this.collisionData.touchPoints.other.id === "cabin" || this.collisionData.touchPoints.other.id === "toiletEnd") {
+            || this.collisionData.touchPoints.other.id === "tree" || this.collisionData.touchPoints.other.id === "toiletEnd"
+            || this.collisionData.touchPoints.other.id === "cabin" || this.collisionData.touchPoints.other.id === "toiletEnd" || this.collisionData.touchPoints.other.id === "toiletEnd") {
 
             // Collision with the left side of the Tube
             if (this.collisionData.touchPoints.other.left) {
@@ -264,7 +264,7 @@ export class Player extends Character {
 
         // Goomba collision check
         // Checks if collision touchpoint id is either "goomba" or "flyingGoomba"
-        if (this.collisionData.touchPoints.other.id === "goomba" || this.collisionData.touchPoints.other.id === "flyingGoomba" || this.collisionData.touchPoints.other.id === "flyingUFO" || this.collisionData.touchPoints.other.id === "alien" || this.collisionData.touchPoints.other.id === "SkibidiToilet" ) {
+        if (this.collisionData.touchPoints.other.id === "goomba" || this.collisionData.touchPoints.other.id === "flyingGoomba" || this.collisionData.touchPoints.other.id === "Snowman" || this.collisionData.touchPoints.other.id === "Owl" || this.collisionData.touchPoints.other.id === "flyingUFO" || this.collisionData.touchPoints.other.id === "alien" ) {
             if (GameEnv.invincible === false) {
                 GameEnv.goombaInvincible = true;
                 // Collision with the left side of the Enemy
