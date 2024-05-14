@@ -19,7 +19,8 @@ import Tube from './Tube.js';
 import Tree from './Tree.js';
 import Goomba from './Goomba.js';
 import FlyingGoomba from './FlyingGoomba.js';
-import BlockPlatform from './BlockPlatform.js';
+import BlockPlatform from './BlockPlatform.js'
+import GlowBlock from './GlowBlock.js';
 import Mushroom from './Mushroom.js';
 import Coin from './Coin.js';
 import FlyingUFO from './FlyingUFO.js';
