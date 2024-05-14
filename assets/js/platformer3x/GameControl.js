@@ -148,12 +148,11 @@ const GameControl = {
      * @memberof GameControl
      */
     startTimer() {
-        if (GameEnv.timerActive) {
-            return;
-        }
-        
-        this.intervalId = setInterval(() => this.updateTimer(), GameEnv.timerInterval);
-        GameEnv.timerActive = true;
+        // Get the current time
+        this.startTime = Date.now();
+
+        // Start the timer interval, updating the timer every 0.01 second (10 milliseconds)
+        this.timerInterval = setInterval(() => this.updateTimer(), 10);
     },
 
     /**
@@ -162,34 +161,7 @@ const GameControl = {
      * @memberof GameControl
      */
     stopTimer() {   
-        if (!GameEnv.timerActive) return;
-        
-        this.saveTime(GameEnv.time, GameEnv.coinScore)
-
-        GameEnv.timerActive = false
-        GameEnv.time = 0;
-        GameEnv.coinScore = 0;
-
-        clearInterval(this.intervalID)
-    },
-
-    saveTime() {
-        const data = {
-            userID: GameEnv.userID,
-            time: GameEnv.time - 10,
-            coinScore: GameEnv.coinScore
-        }
-
-        const currDataList = JSON.parse(localStorage.getItem(this.localStorageTimeKey))
-
-        if (!currDataList || !Array.isArray(currDataList)) {
-            localStorage.setItem(this.localStorageTimeKey, JSON.stringify([data]))
-            return;
-        }
-
-        currDataList.push(data)
-        
-        localStorage.setItem(this.localStorageTimeKey, JSON.stringify(currDataList))
+        clearInterval(this.timerInterval); // Clear the interval to stop the timer
     },
 
     randomEventId: null, //Variable to determine which random event will activate.
