@@ -10,15 +10,54 @@ const Leaderboard = {
     detailed: false,
     dim: false,
 
-    getSortedLeaderboardData () {
+    getTimeSortedLeaderboardData (slowestFirst) {
         const localData = JSON.parse(localStorage.getItem(this.currentKey))
         if (!localData) {
             console.log("NO DATA")
             return []
         }
         localData.sort((a, b) => a.time - b.time);
+        if (slowestFirst) {
+            return localData.reverse()
+        }
+
         return localData
     }, 
+
+    getCoinScoreSortedLeaderboardData (highestFirst) {
+        const localData = JSON.parse(localStorage.getItem(this.currentKey))
+        if (!localData) {
+            console.log("NO DATA")
+            return []
+        }
+        localData.sort((a, b) => a.coinScore - b.coinScore);
+        if (highestFirst) {
+            return localData.reverse()
+        }
+
+        return localData
+    }, 
+
+    getDateSortedLeaderboardData (newestFirst) {
+        const localData = JSON.parse(localStorage.getItem(this.currentKey))
+        if (!localData) {
+            console.log("NO DATA")
+            return []
+        }
+
+        localData.sort((a, b) => {
+            const dateA = new Date(a.date)
+            const dateB = new Date(b.date)
+
+            return dateA - dateB
+        })
+        //defaults to oldest first
+        if (newestFirst) {
+            return localData.reverse()
+        }
+
+        return localData
+    },
 
     backgroundDim: {
         create () {
@@ -47,6 +86,34 @@ const Leaderboard = {
         },
     },
 
+    createDetailToggledAndSort () {
+        document.getElementById("detail-toggle-section")?.remove()
+
+        const buttonSection = document.createElement("div")
+        buttonSection.style.width = "100%"
+        buttonSection.id = "detail-toggle-section"
+        buttonSection.style.display = "flex"
+        buttonSection.style.alignItems = "center"
+        buttonSection.style.justifyContent = "center"
+        const sortDropDown = document.createElement("label")
+        sortDropDown.htmlFor = "sorts"
+        sortDropDown.innerText = "Sort by: "
+        buttonSection.append(sortDropDown)
+        const sortOptions = document.createElement("select")
+        sortOptions.name = "sorts"
+        sortOptions.id = "sorts"
+
+        buttonSection.append(sortOptions)
+        const toggleButton = document.createElement("button")
+        toggleButton.style.width = "20%"
+        toggleButton.innerText = Leaderboard.detailed ? "[Close]":"[Expand]"
+        buttonSection.append(toggleButton)
+        
+        toggleButton.addEventListener("click", this.toggleDetails)
+
+        return buttonSection
+    },
+
     createLeaderboardDisplayTable () {
         const table = document.createElement("table");
         table.className = "table scores"
@@ -59,10 +126,7 @@ const Leaderboard = {
         header.append(th2);
         table.append(header);
         const th3 = document.createElement("th");
-        th3.innerText = "Score  ";
-        const detailToggle = document.createElement("button")
-        detailToggle.innerText = "..."
-        th3.append(detailToggle)
+        th3.innerText = "Score ";
         header.append(th3);
         table.append(header);
         const th4 = document.createElement("th");
@@ -80,42 +144,39 @@ const Leaderboard = {
         header.append(th6);
         table.append(header);
 
-        detailToggle.addEventListener("click", this.toggleDetails)
         return table
     },
 
     toggleDetails() {
-        const table = document.getElementsByClassName("table scores")[0]
         Leaderboard.detailed = !Leaderboard.detailed
 
-        if (table) {
-            table.remove() //remove old table if it is there
-        }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        Leaderboard.updateLeaderboardDisplay()
     },
 
-    createPagingButtonsRow(table) {
-        const data = Leaderboard.getSortedLeaderboardData()
-        const breakRow = document.createElement("br")
-        table.append(breakRow)
-        const pagingButtonsRow = document.createElement("tr")
-        const td1 = document.createElement("td");
-        td1.style.textAlign = "end"
+    createPagingButtonsRow() {
+        const data = Leaderboard.getTimeSortedLeaderboardData()
+
+        const pagingButtonsRow = document.createElement("div")
+        pagingButtonsRow.id = "paging-buttons-row"
+        pagingButtonsRow.style.display = "grid"
+        pagingButtonsRow.style.gridTemplateColumns = "auto auto auto"
+        pagingButtonsRow.style.textAlign = "center"
+        pagingButtonsRow.style.width = "100%"
+
         const backButton = document.createElement("button")
         backButton.innerText = "<"
         backButton.style.width = "100%"
-        td1.append(backButton)
-        pagingButtonsRow.append(td1);
-        const td2 = document.createElement("td");
-        td2.innerText = `${this.currentPage} of ${Math.ceil(data.length/Leaderboard.rowsPerPage)}`
-        pagingButtonsRow.append(td2);
-        const td3 = document.createElement("td");
-        td3.style.textAlign = "start"
+        pagingButtonsRow.append(backButton)
+
+        const pageDisplay = document.createElement("span")
+        pageDisplay.textContent = `${this.currentPage} of ${Math.ceil(data.length/Leaderboard.rowsPerPage)}`
+        pagingButtonsRow.append(pageDisplay)
+        // pagingButtonsRow.innerText = `${this.currentPage} of ${Math.ceil(data.length/Leaderboard.rowsPerPage)}`
+
         const frontButton = document.createElement("button")
         frontButton.innerText = ">"
         frontButton.style.width = "100%"
-        td3.append(frontButton)
-        pagingButtonsRow.append(td3);
+        pagingButtonsRow.append(frontButton)
 
         backButton.addEventListener("click", this.backPage)
         frontButton.addEventListener("click", this.frontPage)
@@ -123,24 +184,14 @@ const Leaderboard = {
         return pagingButtonsRow
     },
 
-    createClearLeaderboardButton(table) {
-        const breakRow = document.createElement("br")
-        table.append(breakRow)
-        const clearButtonRow = document.createElement("tr")
-        const td1 = document.createElement("td");
-        td1.style.textAlign = "end"
-        const space1 = document.createElement("tr")
-        td1.append(space1)
-        clearButtonRow.append(td1);
+    createClearLeaderboardButton() {
+        const clearButtonRow = document.createElement("div")
+        clearButtonRow.id = "clear-button-row"
+        clearButtonRow.style.textAlign = "center"
         const clearButton = document.createElement("button")
         clearButton.innerText = "CLEAR TABLE"
-        clearButton.style.width = '100%'
+        clearButton.style.width = '50%'
         clearButtonRow.append(clearButton)
-        const td3 = document.createElement("td");
-        td3.style.textAlign = "start"
-        const space2 = document.createElement("tr")
-        td3.append(space2)
-        clearButtonRow.append(td3);
 
         clearButton.addEventListener("click", this.clearTable)
 
@@ -157,11 +208,11 @@ const Leaderboard = {
         if (table) {
             table.remove() //remove old table if it is there
         }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable())
+        Leaderboard.updateLeaderboardDisplay()
     },
     
     updateLeaderboardTable () {
-        const data = this.getSortedLeaderboardData()
+        const data = this.getTimeSortedLeaderboardData()
         const table = this.createLeaderboardDisplayTable()
         const startPage = (this.currentPage-1)*this.rowsPerPage
         const displayData = data.slice(startPage, startPage+this.rowsPerPage)
@@ -179,25 +230,57 @@ const Leaderboard = {
             row.append(td3);
             table.append(row);
             const td4 = document.createElement("td");
-            td4.innerText = score.difficulty;
+            if (score.difficulty) {
+                td4.innerText = score.difficulty;
+            }
             td4.hidden = !this.detailed
             row.append(td4);
             table.append(row);
             const td5 = document.createElement("td");
-            td5.innerText = score.gameSpeed;
+            if (score.gameSpeed) {
+                td5.innerText = score.gameSpeed;
+            }
             td5.hidden = !this.detailed
             row.append(td5);
             const td6 = document.createElement("td");
-            td6.innerText = score.date
+            if (score.date) {
+                const date = new Date(score.date)
+                td6.innerText = `${date.getMonth()+1}/${date.getDate()}`
+            }
             td6.hidden = !this.detailed
             row.append(td6);
             table.append(row);
         });
-
-        table.append(Leaderboard.createPagingButtonsRow(table));
-        table.append(Leaderboard.createClearLeaderboardButton(table))
         
         return table
+    },
+
+    updateLeaderboardDisplay () {
+        const table = document.getElementsByClassName("table scores")[0]
+        const detailToggleSection = document.getElementById("detail-toggle-section")
+        const clearButtonRow = document.getElementById("clear-button-row")
+        const pagingButtonsRow = document.getElementById("paging-buttons-row")
+
+        if (detailToggleSection) {
+            detailToggleSection.remove()
+        }
+
+        if (table) {
+            table.remove() //remove old table if it is there
+        }
+
+        if (pagingButtonsRow) {
+            pagingButtonsRow.remove()
+        }
+
+        if (clearButtonRow) {
+            clearButtonRow.remove()
+        }
+
+        document.getElementById("leaderboardDropDown").append(Leaderboard.createDetailToggledAndSort())
+        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        document.getElementById("leaderboardDropDown").append(Leaderboard.createPagingButtonsRow())
+        document.getElementById("leaderboardDropDown").append(Leaderboard.createClearLeaderboardButton())
     },
 
     backPage () {
@@ -210,16 +293,11 @@ const Leaderboard = {
 
         Leaderboard.currentPage -= 1
 
-        if (table) {
-            table.remove() //remove old table if it is there
-        }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        Leaderboard.updateLeaderboardDisplay()
     },
     
     frontPage () {
-        const table = document.getElementsByClassName("table scores")[0]
-
-        const data = Leaderboard.getSortedLeaderboardData()
+        const data = Leaderboard.getTimeSortedLeaderboardData()
 
         console.log(data.length/Leaderboard.rowsPerPage)
 
@@ -229,10 +307,8 @@ const Leaderboard = {
 
         Leaderboard.currentPage += 1
 
-        if (table) {
-            table.remove() //remove old table if it is there
-        }
-        document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+        Leaderboard.updateLeaderboardDisplay()
+        
     },
 
     openLeaderboardPanel () {
@@ -248,7 +324,7 @@ const Leaderboard = {
                 if (table) {
                     table.remove() //remove old table if it is there
                 }
-                document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
+                Leaderboard.updateLeaderboardDisplay()
             }
 
             const leaderboardDropDown = document.querySelector('.leaderboardDropDown');
