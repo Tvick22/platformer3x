@@ -4,8 +4,8 @@ import GameEnv from "./GameEnv.js";
 import GameControl from "./GameControl.js";
 import Socket from "./Multiplayer.js";
 import Chat from "./Chat.js"
-import { enableLightMode } from './lightMode.js';
-import { enableDarkMode } from './darkMode.js';
+import { enableLightMode, enableDarkMode } from './Document.js';
+
 
 /* Coding Style Notes
  *
@@ -292,19 +292,39 @@ export class SettingsControl extends LocalStorage{
     }
 
     get isThemeInput() {
+        const localstorage = window.localStorage
+        const lightmodekey = "islightMode"
         const div = document.createElement("div");
         div.innerHTML = "Theme Change:"; // label
-    
+        const localStorageLightModeToggle = localstorage.getItem(lightmodekey)
+        
+        if (localStorageLightModeToggle) {
+            GameEnv.isLightMode = localStorageLightModeToggle.toLowerCase() === "true"
+        }
+
+
         const islightMode = document.createElement("input");  // get user defined lightmode boolean
         islightMode.type = "checkbox";
-        islightMode.checked = GameEnv.lightMode; // GameEnv contains latest is lightMode state
+        if (GameEnv.isLightMode) {
+            enableLightMode();
+            islightMode.checked = true;
+        } else {
+            enableDarkMode();
+            islightMode.checked = false;
+        }
         islightMode.addEventListener('change', () => {
             if (islightMode.checked) {
                 enableLightMode();
+                GameEnv.isLightMode = true;
+                localstorage.setItem(lightmodekey, GameEnv.isLightMode)
             } else {
                 enableDarkMode();
+                GameEnv.isLightMode = false;
+                localstorage.setItem(lightmodekey, GameEnv.isLightMode)
             }
+        console.log(GameEnv.isLightMode)
         });
+
 
         // Append elements to the DOM or wherever appropriate
         div.appendChild(islightMode); 

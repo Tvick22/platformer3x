@@ -1,7 +1,7 @@
 import GameEnv from './GameEnv.js';
 import GameObject from './GameObject.js';
 
-export class BlockPlatform extends GameObject {
+export class GlowBlock extends GameObject {
     constructor(canvas, image, data, xPercentage, yPercentage) {
         super(canvas, image, data);
         this.platformX = xPercentage * GameEnv.innerWidth;
@@ -16,8 +16,9 @@ export class BlockPlatform extends GameObject {
     // Draw position is always 0,0
     draw() {
         this.ctx.drawImage(this.image, 0, 0, this.canvas.width, this.canvas.height);
-        // Remove glow effect
-        // this.canvas.style.boxShadow = "0 0 10px 5px rgba(0, 255, 255, 0.7)";
+
+        // add glow effect
+        this.canvas.style.boxShadow = "0 0 10px 5px rgba(0, 255, 255, 0.7)";
     }
 
     // Set platform position
@@ -38,7 +39,7 @@ export class BlockPlatform extends GameObject {
         this.canvas.style.position = 'absolute';
         this.canvas.style.left = `${platformX}px`;
         this.canvas.style.top = `${platformY}px`;
-    }
+    } 
 }
 
-export default BlockPlatform;
+export default GlowBlock;

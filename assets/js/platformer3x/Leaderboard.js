@@ -8,6 +8,7 @@ const Leaderboard = {
     rowsPerPage: 10,
     isOpen: false,
     detailed: false,
+    dim: false,
 
     getTimeSortedLeaderboardData (slowestFirst) {
         const localData = JSON.parse(localStorage.getItem(this.currentKey))
@@ -60,11 +61,29 @@ const Leaderboard = {
 
     backgroundDim: {
         create () {
+            this.dim = true // sets the dim to be true when the leaderboard is opened
             console.log("CREATE DIM")
+            const dimDiv = document.createElement("div");
+            dimDiv.id = "dim";
+            dimDiv.style.backgroundColor = "black";
+            dimDiv.style.width = "100%";
+            dimDiv.style.height = "100%";
+            dimDiv.style.position = "absolute";
+            dimDiv.style.opacity = "0.8";
+            document.body.append(dimDiv);
+            dimDiv.style.zIndex = "9998"
+            dimDiv.addEventListener("click", Leaderboard.backgroundDim.remove)
         },
         remove () {
+            this.dim = false
             console.log("REMOVE DIM");
-        }
+            const dimDiv = document.getElementById("dim");
+            dimDiv.remove();
+            Leaderboard.isOpen = false
+            leaderboardDropDown.style.width = this.isOpen?"70%":"0px";
+            leaderboardDropDown.style.top = this.isOpen?"15%":"0px";
+            leaderboardDropDown.style.left = this.isOpen?"15%":"0px";
+        },
     },
 
     createDetailToggledAndSort () {
@@ -296,12 +315,10 @@ const Leaderboard = {
             leaderboardTitle.innerHTML = "Local Leaderboard";
 
             // toggle isOpen
-            this.isOpen = !this.isOpen;
+            this.isOpen = true
             // open and close properties for sidebar based on isOpen
             const table = document.getElementsByClassName("table scores")[0]
-            if (!this.isOpen) {
-                Leaderboard.backgroundDim.remove()
-            }
+
             if (this.isOpen) {
                 Leaderboard.backgroundDim.create()
                 if (table) {
@@ -315,7 +332,7 @@ const Leaderboard = {
             leaderboardDropDown.style.top = this.isOpen?"15%":"0px";
             leaderboardDropDown.style.left = this.isOpen?"15%":"0px";
     },
-
+    
     initializeLeaderboard () {
         const leaderboardTitle = document.createElement("div");
         leaderboardTitle.id = "leaderboardTitle";
