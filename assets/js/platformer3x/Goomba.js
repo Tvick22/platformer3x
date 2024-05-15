@@ -173,8 +173,8 @@ export class Goomba extends Character {
 
     // Define the jump action
     jump() {
-        // Implement your jump logic here
-        // For example, change the y position or apply a vertical velocity
+        // jump logic needed
+        // ...
     }
 }
 
