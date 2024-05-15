@@ -4,7 +4,7 @@ import GameControl from './GameControl.js';
 
 export class Goomba extends Character {
     // constructors sets up Character object 
-    constructor(canvas, image, data, xPercentage, yPercentage, name, minPosition){
+    constructor(canvas, image, data, xPercentage, yPercentage, name, minPosition) {
         super(canvas, image, data);
 
         //Unused but must be Defined
@@ -36,22 +36,22 @@ export class Goomba extends Character {
         // Check for boundaries
         if (this.x <= this.minPosition || (this.x + this.canvasWidth >= this.maxPosition)) {
             this.speed = -this.speed;
-        };
+        }
 
         //Random Event 2: Time Stop All Goombas
         if (GameControl.randomEventId === 2 && GameControl.randomEventState === 1) {
             this.speed = 0;
             if (this.name === "goombaSpecial") {
                 GameControl.endRandomEvent();
-            };
-        };
+            }
+        }
 
         //Random Event 3: Kill a Random Goomba
-        //Whichever Goomba recieves this message first will die, then end the event so the other Goombas don't die
+        //Whichever Goomba receives this message first will die, then end the event so the other Goombas don't die
         if (GameControl.randomEventId === 3 && GameControl.randomEventState === 1) {
             this.destroy();
             GameControl.endRandomEvent();
-        };
+        }
 
         // Every so often change direction
         switch(GameEnv.difficulty) {
@@ -66,8 +66,8 @@ export class Goomba extends Character {
                 break;
         }
 
-         //Chance for Goomba to turn Gold
-         if (["normal","hard"].includes(GameEnv.difficulty)) {
+        //Chance for Goomba to turn Gold
+        if (["normal","hard"].includes(GameEnv.difficulty)) {
             if (Math.random() < 0.00001) {
                 this.canvas.style.filter = 'brightness(1000%)';
                 this.immune = 1;
@@ -76,9 +76,9 @@ export class Goomba extends Character {
         
         //Immunize Goomba & Texture It
         if (GameEnv.difficulty === "hard") {
-                this.canvas.style.filter = "invert(100%)";
-                this.canvas.style.scale = 1.25;
-                this.immune = 1;
+            this.canvas.style.filter = "invert(100%)";
+            this.canvas.style.scale = 1.25;
+            this.immune = 1;
         } else if (GameEnv.difficulty === "impossible") {
             this.canvas.style.filter = 'brightness(1000%)';
             this.immune = 1;
@@ -86,6 +86,11 @@ export class Goomba extends Character {
 
         // Move the enemy
         this.x -= this.speed;
+
+        // Randomly trigger a jump (increased probability)
+        if (Math.random() < 0.1) { // Adjust the probability as needed
+            this.jump();
+        }
 
         this.playerBottomCollision = false;
     }
@@ -100,18 +105,10 @@ export class Goomba extends Character {
 
         if (this.collisionData.touchPoints.other.id === "player") {
             // Collision: Top of Goomba with Bottom of Player
-            //console.log(this.collisionData.touchPoints.other.bottom + 'bottom')
-            //console.log(this.collisionData.touchPoints.other.top + "top")
-            //console.log(this.collisionData.touchPoints.other.right + "right")
-            //console.log(this.collisionData.touchPoints.other.left + "left")
             if (this.collisionData.touchPoints.other.bottom && this.immune == 0) {
                 GameEnv.invincible = true;
                 GameEnv.goombaBounce = true;
-                this.canvas.style.transition = "transform 1.5s, opacity 1s";
-                this.canvas.style.transition = "transform 2s, opacity 1s";
-                this.canvas.style.transformOrigin = "bottom"; // Set the transform origin to the bottom
-                this.canvas.style.transform = "scaleY(0)"; // Make the Goomba flat
-                this.speed = 0;
+                this.explode(); // call the explode method
                 GameEnv.playSound("goombaDeath");
 
                 setTimeout((function() {
@@ -119,11 +116,10 @@ export class Goomba extends Character {
                     this.destroy();
                 }).bind(this), 1500);
 
-    
                 // Set a timeout to make GameEnv.invincible false after 2000 milliseconds (2 seconds)
                 setTimeout(function () {
-                this.destroy();
-                GameEnv.invincible = false;
+                    this.destroy();
+                    GameEnv.invincible = false;
                 }, 2000);
             }
         }
@@ -138,6 +134,47 @@ export class Goomba extends Character {
                 this.speed = -this.speed;            
             }
         }
+    }
+
+    // Define the explosion action
+    explode() {
+        const shards = 10; // number of shards
+        for (let i = 0; i < shards; i++) {
+            const shard = document.createElement('div');
+            shard.style.position = 'absolute';
+            shard.style.width = '5px';
+            shard.style.height = '5px';
+            shard.style.backgroundColor = 'brown'; // color of the shards
+            shard.style.left = `${this.x}px`;
+            shard.style.top = `${this.y}px`;
+            this.canvas.parentElement.appendChild(shard); // add shard to the canvas container
+
+            const angle = Math.random() * 2 * Math.PI;
+            const speed = Math.random() * 5 + 2;
+
+            const shardX = Math.cos(angle) * speed;
+            const shardY = Math.sin(angle) * speed;
+
+            shard.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${shardX * 20}px, ${shardY * 20}px)`, opacity: 0 }
+            ], {
+                duration: 1000,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
+
+            setTimeout(() => {
+                shard.remove();
+            }, 1000);
+        }
+        this.canvas.style.opacity = 0;
+    }
+
+    // Define the jump action
+    jump() {
+        // Implement your jump logic here
+        // For example, change the y position or apply a vertical velocity
     }
 }
 
