@@ -12,7 +12,7 @@ import GameControl from './GameControl.js';
  * 
  * @extends Character
  */
-export class PlayerBase extends Character {
+export class PlayerBaseOneD extends Character {
     /**
      * Initial environment of the player.
      * @property {string} collision - The current object the player is interacting with (e.g., 'floor', 'wall', 'platform').
@@ -115,6 +115,7 @@ export class PlayerBase extends Character {
                 break;
             case 'jump':
                 // Check condition for player to jump
+                this.state.movement.up = true
                 if (this.state.movement.up && !this.state.movement.falling) {
                     // jump
                     GameEnv.playSound("PlayerJump");
@@ -142,16 +143,40 @@ export class PlayerBase extends Character {
     updateAnimation() {
         switch (this.state.animation) {
             case 'idle':
-                this.setSpriteAnimation(this.playerData.idle[this.state.direction]);
+                if(this.state.direction == "left"){
+                    this.canvas.style.transform = 'scaleX(-1)';
+                }
+                else{
+                    this.canvas.style.transform = 'scaleX(1)';
+                }
+                this.setSpriteAnimation(this.playerData.idle);
                 break;
             case 'walk':
-                this.setSpriteAnimation(this.playerData.walk[this.state.direction]);
+                if(this.state.direction == "left"){
+                    this.canvas.style.transform = 'scaleX(-1)';
+                }
+                else{
+                    this.canvas.style.transform = 'scaleX(1)';
+                }
+                this.setSpriteAnimation(this.playerData.walk);
                 break;
             case 'run':
-                this.setSpriteAnimation(this.playerData.run[this.state.direction]);
+                if(this.state.direction == "left"){
+                    this.canvas.style.transform = 'scaleX(-1)';
+                }
+                else{
+                    this.canvas.style.transform = 'scaleX(1)';
+                }
+                this.setSpriteAnimation(this.playerData.run);
                 break;
             case 'jump':
-                this.setSpriteAnimation(this.playerData.jump[this.state.direction]);
+                if(this.state.direction == "left"){
+                    this.canvas.style.transform = 'scaleX(-1)';
+                }
+                else{
+                    this.canvas.style.transform = 'scaleX(1)';
+                }
+                this.setSpriteAnimation(this.playerData.jump);
                 break;
             default:
                 console.error(`Invalid state: ${this.state.animation}`);
@@ -376,4 +401,4 @@ export class PlayerBase extends Character {
 
 }
 
-export default PlayerBase;
+export default PlayerBaseOneD;
