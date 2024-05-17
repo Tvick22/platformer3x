@@ -9,6 +9,7 @@ const Leaderboard = {
     isOpen: false,
     detailed: false,
     dim: false,
+    currentSort: "time-l",
 
     getTimeSortedLeaderboardData (slowestFirst) {
         const localData = JSON.parse(localStorage.getItem(this.currentKey))
@@ -18,9 +19,9 @@ const Leaderboard = {
         }
         localData.sort((a, b) => a.time - b.time);
         if (slowestFirst) {
-            return localData.reverse()
+            localData.reverse()
         }
-
+        
         return localData
     }, 
 
@@ -32,7 +33,7 @@ const Leaderboard = {
         }
         localData.sort((a, b) => a.coinScore - b.coinScore);
         if (highestFirst) {
-            return localData.reverse()
+            localData.reverse()
         }
 
         return localData
@@ -53,9 +54,9 @@ const Leaderboard = {
         })
         //defaults to oldest first
         if (newestFirst) {
-            return localData.reverse()
+            localData.reverse()
         }
-
+        console.log(localData)
         return localData
     },
 
@@ -86,7 +87,7 @@ const Leaderboard = {
         },
     },
 
-    createDetailToggledAndSort () {
+    createDetailToggle() {
         document.getElementById("detail-toggle-section")?.remove()
 
         const buttonSection = document.createElement("div")
@@ -94,16 +95,8 @@ const Leaderboard = {
         buttonSection.id = "detail-toggle-section"
         buttonSection.style.display = "flex"
         buttonSection.style.alignItems = "center"
-        buttonSection.style.justifyContent = "center"
-        const sortDropDown = document.createElement("label")
-        sortDropDown.htmlFor = "sorts"
-        sortDropDown.innerText = "Sort by: "
-        buttonSection.append(sortDropDown)
-        const sortOptions = document.createElement("select")
-        sortOptions.name = "sorts"
-        sortOptions.id = "sorts"
+        buttonSection.style.justifyContent = "end"
 
-        buttonSection.append(sortOptions)
         const toggleButton = document.createElement("button")
         toggleButton.style.width = "20%"
         toggleButton.innerText = Leaderboard.detailed ? "[Close]":"[Expand]"
@@ -112,6 +105,61 @@ const Leaderboard = {
         toggleButton.addEventListener("click", this.toggleDetails)
 
         return buttonSection
+    },
+
+    createSortToggle (parent) {
+        const toggleBtn = document.createElement("button")
+        const columnTitle = document.createElement("div")
+
+        columnTitle.innerText = parent.innerText
+
+        toggleBtn.innerText = "sort" //default text
+
+        if (Leaderboard.currentSort.slice(0, -2) == columnTitle.innerText.toLowerCase()) {
+            toggleBtn.innerText = "greatest" // currentlly sorted with greatest first
+            if (Leaderboard.currentSort.slice(-1) == "l") {
+                toggleBtn.innerText = "least" //currently sorted with least first
+            }
+        }
+
+        toggleBtn.id = `${columnTitle.innerText.toLowerCase()}-toggle-sort`
+        toggleBtn.style.width = "100%"
+
+        parent.innerText = ""
+        parent.style.justifyContent = "center"
+
+        toggleBtn.addEventListener("click", () => {
+            if (Leaderboard.currentSort == `${columnTitle.innerText.toLowerCase()}-l`) {
+                Leaderboard.currentSort = `${columnTitle.innerText.toLowerCase()}-g` //if the current sort is this one, and it is on least change it to greatest
+            } else {
+                Leaderboard.currentSort = `${columnTitle.innerText.toLowerCase()}-l` //if it reaches here, the current sort is on greatest, and needs to change to least
+            }
+        })
+
+        toggleBtn.addEventListener("click", Leaderboard.updateLeaderboardDisplay) //refresh display after 
+
+        parent.append(columnTitle, toggleBtn)
+    },
+
+    sortData () {
+        if (Leaderboard.currentSort == "time-l") {
+            return Leaderboard.getTimeSortedLeaderboardData()
+        }
+        if (Leaderboard.currentSort == "date-l") {
+            return Leaderboard.getDateSortedLeaderboardData()
+        }
+        if (Leaderboard.currentSort == "score-l") {
+            return Leaderboard.getCoinScoreSortedLeaderboardData()
+        }
+        if (Leaderboard.currentSort === "time-g") {
+            return Leaderboard.getTimeSortedLeaderboardData(true)
+        }
+        if (Leaderboard.currentSort === "date-g") {
+            return Leaderboard.getDateSortedLeaderboardData(true)
+        }
+        if (Leaderboard.currentSort === "score-g") {
+            return Leaderboard.getCoinScoreSortedLeaderboardData(true)
+        }
     },
 
     createLeaderboardDisplayTable () {
@@ -123,17 +171,16 @@ const Leaderboard = {
         header.append(th1);
         const th2 = document.createElement("th");
         th2.innerText = "Time";
+        this.createSortToggle(th2)
         header.append(th2);
-        table.append(header);
         const th3 = document.createElement("th");
-        th3.innerText = "Score ";
+        th3.innerText = "Score";
+        this.createSortToggle(th3)
         header.append(th3);
-        table.append(header);
         const th4 = document.createElement("th");
         th4.innerText = "Difficulty";
         th4.hidden = !Leaderboard.detailed
         header.append(th4);
-        table.append(header);
         const th5 = document.createElement("th");
         th5.innerText = "Game Speed";
         th5.hidden = !Leaderboard.detailed
@@ -141,7 +188,9 @@ const Leaderboard = {
         const th6 = document.createElement("th");
         th6.innerText = "Date";
         th6.hidden = !Leaderboard.detailed
+        this.createSortToggle(th6)
         header.append(th6);
+
         table.append(header);
 
         return table
@@ -212,9 +261,9 @@ const Leaderboard = {
     },
     
     updateLeaderboardTable () {
-        const data = this.getTimeSortedLeaderboardData()
         const table = this.createLeaderboardDisplayTable()
         const startPage = (this.currentPage-1)*this.rowsPerPage
+        const data = Leaderboard.sortData()
         const displayData = data.slice(startPage, startPage+this.rowsPerPage)
         
         displayData.forEach(score => {
@@ -277,7 +326,7 @@ const Leaderboard = {
             clearButtonRow.remove()
         }
 
-        document.getElementById("leaderboardDropDown").append(Leaderboard.createDetailToggledAndSort())
+        document.getElementById("leaderboardDropDown").append(Leaderboard.createDetailToggle())
         document.getElementById("leaderboardDropDown").append(Leaderboard.updateLeaderboardTable()) //update new leaderboard
         document.getElementById("leaderboardDropDown").append(Leaderboard.createPagingButtonsRow())
         document.getElementById("leaderboardDropDown").append(Leaderboard.createClearLeaderboardButton())
