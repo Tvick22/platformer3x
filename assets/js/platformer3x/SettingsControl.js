@@ -642,10 +642,6 @@ export class SettingsControl extends LocalStorage{
        var multiplayerButton = settingsControl.multiplayerButton;
        document.getElementById("sidebar").append(multiplayerButton);
 
-       // Get/Construct HTML button and event update for theme
-       var themeButton = settingsControl.themeButton;
-       document.getElementById("sidebar").append(themeButton);
-
        // Get/Construct HTML button and event update for multiplayer
        var chatButton = settingsControl.chatButton;
        document.getElementById("sidebar").append(chatButton);
@@ -654,7 +650,7 @@ export class SettingsControl extends LocalStorage{
         var playerCount = settingsControl.playerCount;
         document.getElementById("sidebar").append(playerCount);
 
-          // Get/Construct HTML input and event update for theme change
+        // Get/Construct HTML input and event update for theme change
         var themeChangeControl = settingsControl.isThemeInput;
         document.getElementById("sidebar").append(themeChangeControl); 
 
