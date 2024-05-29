@@ -7,7 +7,8 @@ import skibidiTitan from './SkibidiTitan.js';
 import Laser from './Laser.js';
 import SkibidiToilet from './SkibidiToilet.js';
 import PlayerSkibidi from './PlayerSkibidi.js';
-import Tree from './Tree.js';
+import FinishLine from './FinishLine.js';
+import PlayerBaseOneD from './PlayerBaseOneD.js';
 
 const assets = {
     obstacles: {
@@ -32,9 +33,12 @@ const assets = {
         height: 300,
         scaleSize: 100,
       },
-      toilet: { 
+      toiletfinish: {
         src: "/images/platformer/obstacles/toilet.png",
-        hitbox: { widthPercentage: 0.5, heightPercentage: 0.5}
+        hitbox: { widthPercentage: 0.5, heightPercentage: 0.5 },
+        width: 500,
+        height: 500,
+        scaleSize: 150,
       },
       laser: {
         src: "/images/platformer/obstacles/laser.png",
@@ -176,24 +180,12 @@ const assets = {
         height: 140,
         scaleSize: 150,
         speedRatio: 0.7,
-        animationSpeed: 8,
+        animationSpeed: 4,
         ///animationspeed:6
-        idle: {
-            left: { row: 0, frames: 5 },
-            right: { row: 0, frames: 5},
-        },
-        walk: {
-            left: { row: 1, frames: 6 },
-            right: { row: 1, frames: 6 },
-        },
-        run: {
-            left: { row: 2, frames: 7 },
-            right: { row: 2, frames: 7 },
-        },
-        jump: {
-            left: { row: 3, frames: 8 },
-            right: { row: 3, frames: 8 },
-        },
+        idle: {row: 0, frames: 5 },
+        walk: {  row: 1, frames: 6 },
+        run: {  row: 2, frames: 7 },
+        jump: {row: 3, frames: 8 },
         hitbox: { widthPercentage: 0.3, heightPercentage: 0.8 }
       },
       whitemario: {
@@ -518,7 +510,8 @@ const assets = {
     { name: 'SkibidiToilet', id: 'SkibidiToilet', class: SkibidiToilet, data: assets.enemies.skibidiToilet, xPercentage:  0.5, minPosition: 0.3 },
     { name: 'SkibidiToilet', id: 'SkibidiToilet', class: SkibidiToilet, data: assets.enemies.skibidiToilet, xPercentage:  0.75, minPosition: 0.5 },
     { name: 'escaper', id: 'player', class: PlayerSkibidi, data: assets.players.escaper  },
-    { name: 'toiletTube', id: 'toiletEnd', class: Tree, data: assets.obstacles.toilet },
+    { name: 'laser', id: 'Laser', class: Laser, data: assets.obstacles.laser, xPercentage:  0.75, yPercentage: 0.5 },
+    { name: 'tolietfinish', id: 'finishline', class: FinishLine, data: assets.obstacles.toiletfinish, xPercentage: 0.85, yPercentage: 0.77 },
     { name: 'complete3', id: 'background', class: BackgroundTransitions,  data: assets.backgrounds.complete3 },
   ];
 
